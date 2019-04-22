@@ -11,39 +11,63 @@ Mirafzal Shavkatov and Begzod Muxamedov
 #define EN_A 9  //motor1 speed (0-255)
 #define EN_B 10 //motor2 speed (0-255)
 //define datchiks
-#define DATCHIK_1 3 //left
-#define DATCHIK_2 4 //right
+#define DATCHIK_LEFT 1 //ANALOG
+#define DATCHIK_RIGHT 5 //ANALOG
+#define DATCHIK_LEFT_CENTER 2 //
+#define DATCHIK_CENTER 3 //
+#define DATCHIK_RIGHT_CENTER 4 //
 
-int max = 255;
-int delaytime = 1;
+#define WHITE "WHITE - 0"
+#define BLACK "BLACK - 1"
 
-int datchik1;
-int datchik2;
+int maxSpeed = 255;
+int minSpeed = 0;
+int delaytime = 1000;
+
+String datchikLeft;
+String datchikRight;
+String datchikLeftCenter;
+String datchikCenter;
+String datchikRightCenter;
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(9600);
+  //driver L298N
   pinMode (EN_A, OUTPUT);
   pinMode (IN_1, OUTPUT);
   pinMode (IN_2, OUTPUT);
   pinMode (EN_B, OUTPUT);
   pinMode (IN_3, OUTPUT);
   pinMode (IN_4, OUTPUT);
+  //datchiks
+  pinMode (DATCHIK_LEFT, INPUT);
+  pinMode (DATCHIK_RIGHT, INPUT);
+  pinMode (DATCHIK_LEFT_CENTER, INPUT);
+  pinMode (DATCHIK_CENTER, INPUT);
+  pinMode (DATCHIK_RIGHT_CENTER, INPUT);
   delay(3000);
 }
 
 
 void loop() {
-  datchik1 = digitalRead(DATCHIK_1);
-  datchik2 = digitalRead(DATCHIK_2);
-  if (datchik1 && datchik2) {
-    goForward(max);
-  } else if(datchik1) {
-    goRight(max);
-  } else if(datchik2) {
-    goLeft(max);
-  } else {
-    pleaseSTOP();
-  }
+  datchikLeft = (digitalRead(DATCHIK_LEFT) == 0) ? WHITE : BLACK;
+  datchikRight = (digitalRead(DATCHIK_RIGHT) == 0) ? WHITE : BLACK;
+  datchikLeftCenter = (digitalRead(DATCHIK_LEFT_CENTER) == 1) ? WHITE : BLACK;
+  datchikCenter = (digitalRead(DATCHIK_CENTER) == 1) ? WHITE : BLACK;
+  datchikRightCenter = (digitalRead(DATCHIK_RIGHT_CENTER) == 1) ? WHITE : BLACK;
+  
+  Serial.print("left:         ");
+  Serial.println(datchikLeft);
+  Serial.print("left center:  ");
+  Serial.println(datchikLeftCenter);
+  Serial.print("center:       ");
+  Serial.println(datchikCenter);
+  Serial.print("right center: ");
+  Serial.println(datchikRightCenter);
+  Serial.print("right:        ");
+  Serial.println(datchikRight);
+  Serial.println("\n------------------------\n");
+
   delay(delaytime);
 }
 
@@ -128,4 +152,3 @@ void pleaseSTOP() {
   digitalWrite(IN_3, LOW);
   digitalWrite(IN_4, LOW);
 }
-
