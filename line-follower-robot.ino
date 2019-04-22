@@ -4,18 +4,18 @@ Mirafzal Shavkatov and Begzod Muxamedov
 */
 
 //define ports for L298N
-#define IN_1 5  //motor1 +
-#define IN_2 6  //motor1 -
-#define IN_3 7  //motor2 + (HIGH/LOW)
-#define IN_4 8  //motor2 - (HIGH/LOW)
-#define EN_A 9  //motor1 speed (0-255)
-#define EN_B 10 //motor2 speed (0-255)
+#define IN_1 6  //motor1 +
+#define IN_2 7  //motor1 -
+#define IN_3 8  //motor2 + (HIGH/LOW)
+#define IN_4 9  //motor2 - (HIGH/LOW)
+#define EN_A 10 //motor1 speed (0-255)
+#define EN_B 11 //motor2 speed (0-255)
 //define datchiks
-#define DATCHIK_LEFT 1 //ANALOG
-#define DATCHIK_RIGHT 5 //ANALOG
-#define DATCHIK_LEFT_CENTER 2 //
-#define DATCHIK_CENTER 3 //
+#define DATCHIK_LEFT 2 //ANALOG
+#define DATCHIK_LEFT_CENTER 3 //
+#define DATCHIK_CENTER 12 //
 #define DATCHIK_RIGHT_CENTER 4 //
+#define DATCHIK_RIGHT 5 //ANALOG
 
 #define WHITE "WHITE - 0"
 #define BLACK "BLACK - 1"
@@ -33,28 +33,29 @@ String datchikRightCenter;
 void setup() {
   Serial.begin(9600);
   //driver L298N
-  pinMode (EN_A, OUTPUT);
-  pinMode (IN_1, OUTPUT);
-  pinMode (IN_2, OUTPUT);
-  pinMode (EN_B, OUTPUT);
-  pinMode (IN_3, OUTPUT);
-  pinMode (IN_4, OUTPUT);
+  pinMode(EN_A, OUTPUT);
+  pinMode(IN_1, OUTPUT);
+  pinMode(IN_2, OUTPUT);
+  pinMode(EN_B, OUTPUT);
+  pinMode(IN_3, OUTPUT);
+  pinMode(IN_4, OUTPUT);
   //datchiks
-  pinMode (DATCHIK_LEFT, INPUT);
-  pinMode (DATCHIK_RIGHT, INPUT);
-  pinMode (DATCHIK_LEFT_CENTER, INPUT);
-  pinMode (DATCHIK_CENTER, INPUT);
-  pinMode (DATCHIK_RIGHT_CENTER, INPUT);
+  pinMode(DATCHIK_LEFT, INPUT);
+  pinMode(DATCHIK_LEFT_CENTER, INPUT);
+  pinMode(DATCHIK_CENTER, INPUT);
+  pinMode(DATCHIK_RIGHT_CENTER, INPUT);
+  pinMode(DATCHIK_RIGHT, INPUT);
   delay(3000);
 }
 
 
 void loop() {
   datchikLeft = (digitalRead(DATCHIK_LEFT) == 0) ? WHITE : BLACK;
-  datchikRight = (digitalRead(DATCHIK_RIGHT) == 0) ? WHITE : BLACK;
   datchikLeftCenter = (digitalRead(DATCHIK_LEFT_CENTER) == 1) ? WHITE : BLACK;
   datchikCenter = (digitalRead(DATCHIK_CENTER) == 1) ? WHITE : BLACK;
   datchikRightCenter = (digitalRead(DATCHIK_RIGHT_CENTER) == 1) ? WHITE : BLACK;
+ datchikRight = (digitalRead(DATCHIK_RIGHT) == 0) ? WHITE : BLACK;
+
   
   Serial.print("left:         ");
   Serial.println(datchikLeft);
@@ -152,3 +153,4 @@ void pleaseSTOP() {
   digitalWrite(IN_3, LOW);
   digitalWrite(IN_4, LOW);
 }
+
